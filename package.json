@@ -1,0 +1,20 @@
+{
+  "name": "feelingweather",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "homironi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mimimiRoni/FeelingWeather.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mimimiRoni/FeelingWeather/issues"
+  },
+  "homepage": "https://github.com/mimimiRoni/FeelingWeather#readme",
+  "description": ""
+}
