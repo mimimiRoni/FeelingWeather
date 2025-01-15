@@ -1,4 +1,4 @@
-name: ESLint Check
+name: Run Tests
 
 on:
   workflow_dispatch:
@@ -11,24 +11,20 @@ on:
       - main
 
 jobs:
-  eslint:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      # リポジトリをチェックアウト
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v4
 
-      # Node.js をセットアップ
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'latest'
 
-      # 必要な依存関係をインストール
       - name: Install dependencies
         run: npm install
 
-      # ESLint を実行
-      - name: Run ESLint
-        run: npm run lint
+      - name: Run tests
+        run: npm run test
