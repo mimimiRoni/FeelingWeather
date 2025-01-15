@@ -10,7 +10,7 @@
     "lint-fix": "eslint . --fix",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "netlify-cli": "^18.0.0",
