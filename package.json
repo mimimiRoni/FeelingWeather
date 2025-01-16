@@ -10,7 +10,8 @@
     "lint-fix": "eslint . --fix",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "coverage-ci": "jest --coverage --silent --ci --testLocationInResults --json --outputFile=\"report.json\""
   },
   "dependencies": {
     "netlify-cli": "^18.0.0",
