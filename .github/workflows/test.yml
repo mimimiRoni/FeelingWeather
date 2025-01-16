@@ -28,3 +28,10 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+      - name: Test coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            annotations: failed-tests
+            test-script: npm run test  --silent --testLocationInResults --ci --all --coverage --json --outputFile="report.json"
