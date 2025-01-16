@@ -10,6 +10,10 @@ on:
     branches:
       - main
 
+permissions:
+  checks: write
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
