@@ -1,0 +1,38 @@
+name: Run Tests
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - develop
+  push:
+    branches:
+      - main
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Test coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            test-script: npx jest --coverage --silent --ci --testLocationInResults --json --outputFile="report.json" --passWithNoTests
