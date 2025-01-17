@@ -7,5 +7,5 @@ module.exports = {
   collectCoverage: true,
   coverageReporters: ['text'],
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/setupTests.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
 };
