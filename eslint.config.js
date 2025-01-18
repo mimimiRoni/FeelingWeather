@@ -12,34 +12,38 @@ export default tseslint.config(
     extends: [
       js.configs.recommended,
       ...tseslint.configs.recommended,
-      prettierConfig
+      prettierConfig,
     ],
-    files: ['**/*.{ts,tsx}'],
+    files: ['**/*.{ts,tsx,js,jsx,mjs,cjs}'],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser
+      globals: globals.browser,
     },
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      prettier: prettier
+      prettier: prettier,
     },
     rules: {
+      'prettier/prettier': 'error',
       ...reactHooks.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off',
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true }
+        { allowConstantExport: true },
       ],
-      'prettier/prettier': [
+      'no-multiple-empty-lines': [
         'error',
         {
-          semi: true,
-          singleQuote: true,
-          trailingComma: 'all',
-          printWidth: 80,
-          tabWidth: 2,
-        }
+          max: 1,
+          maxEOF: 0,
+        },
       ],
-    }
-  }
+    },
+    settings: {
+      react: {
+        version: 'detect', // 自動でReactのバージョンを検出
+      },
+    },
+  },
 );
