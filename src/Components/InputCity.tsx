@@ -24,19 +24,32 @@ const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
       <input
         type="search"
         value={inputValue}
-        onChange={(e) => setInput(e.target.value)}
+        // onChange={(e) => setInput(e.target.value)}
         onFocus={() => {
           setVisibleOptions(true);
         }}
-        onBlur={() => {
-          setVisibleOptions(false);
-        }}
         placeholder="都市名を選択"
       />
-      <ul role="listbox" hidden={!isVisibleOptions}>
-        <li>現在値</li>
-        <li>TODO:選択できる都市名一覧</li>
-      </ul>
+      <div role="listbox" hidden={!isVisibleOptions}>
+        <div
+          onClick={() => {
+            setInput('現在地');
+            onSubmit('現在地');
+            setVisibleOptions(false);
+          }}
+        >
+          現在値
+        </div>
+        <div
+          onClick={() => {
+            setInput('TODO:選択できる都市名一覧');
+            onSubmit('TODO:選択できる都市名一覧');
+            setVisibleOptions(false);
+          }}
+        >
+          TODO:選択できる都市名一覧
+        </div>
+      </div>
     </form>
   );
 };
