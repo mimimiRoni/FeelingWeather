@@ -7,6 +7,7 @@ type InputCityProps = {
 
 const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
   const [inputValue, setInput] = useState('');
+  const [isVisibleOptions, setVisibleOptions] = useState(false);
   const onSubmitHandle = (e: React.FormEvent) => {
     e.preventDefault();
     const inputStr = inputValue.trim();
@@ -21,11 +22,21 @@ const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
   return (
     <form onSubmit={onSubmitHandle} role="form">
       <input
-        type="text"
+        type="search"
         value={inputValue}
         onChange={(e) => setInput(e.target.value)}
+        onFocus={() => {
+          setVisibleOptions(true);
+        }}
+        onBlur={() => {
+          setVisibleOptions(false);
+        }}
         placeholder="都市名を選択"
       />
+      <ul role="listbox" hidden={!isVisibleOptions}>
+        <li>現在値</li>
+        <li>TODO:選択できる都市名一覧</li>
+      </ul>
     </form>
   );
 };

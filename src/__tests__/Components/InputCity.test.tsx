@@ -46,6 +46,24 @@ test('should return error with only spaces', () => {
   expect(mockOnSubmit).toHaveBeenCalledWith('都市名を入力してください');
 });
 
+test('should render city list when on focus input element', () => {
+  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
+  const inputElement = getInputElement();
+
+  fireEvent.focus(inputElement);
+
+  expect(screen.getByRole('listbox')).toBeVisible();
+});
+
+test('should not render city list when on unfocus input element', () => {
+  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
+  const inputElement = getInputElement();
+
+  fireEvent.blur(inputElement);
+
+  expect(screen.queryByRole('listbox')).toBeNull();
+});
+
 /**
  * 入力フィールドを取得する
  * @returns 入力フィールド
