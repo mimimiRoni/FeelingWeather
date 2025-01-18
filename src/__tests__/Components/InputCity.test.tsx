@@ -2,14 +2,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import InputCity from '../../Components/InputCity';
 
 test('should render input field', () => {
-  render(<InputCity onSubmit={() => {}} />);
+  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
   const inputElement = screen.getByPlaceholderText('都市名を入力してください');
 
   expect(inputElement).toBeVisible();
 });
 
 test('should user be able to input', () => {
-  render(<InputCity onSubmit={() => {}} />);
+  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
   const inputElement = getInputElement();
   const inputValue = '東京';
 
@@ -20,7 +20,7 @@ test('should user be able to input', () => {
 
 test('should call onSubmit with input', () => {
   const mockOnSubmit = jest.fn();
-  render(<InputCity onSubmit={mockOnSubmit} />);
+  render(<InputCity onSubmit={mockOnSubmit} onError={() => {}} />);
   const inputValue = '東京';
 
   inputOnSubmit(inputValue);
@@ -30,20 +30,20 @@ test('should call onSubmit with input', () => {
 
 test('should not call onSubmit with no input', () => {
   const mockOnSubmit = jest.fn();
-  render(<InputCity onSubmit={mockOnSubmit} />);
+  render(<InputCity onSubmit={() => {}} onError={mockOnSubmit} />);
 
   inputOnSubmit('');
 
-  expect(mockOnSubmit).not.toHaveBeenCalled();
+  expect(mockOnSubmit).toHaveBeenCalledWith('都市名を入力してください');
 });
 
-test('should not call onSubmit with only spaces', () => {
+test('should return error with only spaces', () => {
   const mockOnSubmit = jest.fn();
-  render(<InputCity onSubmit={mockOnSubmit} />);
+  render(<InputCity onSubmit={() => {}} onError={mockOnSubmit} />);
 
   inputOnSubmit('  ');
 
-  expect(mockOnSubmit).not.toHaveBeenCalled();
+  expect(mockOnSubmit).toHaveBeenCalledWith('都市名を入力してください');
 });
 
 /**
