@@ -3,7 +3,7 @@ import InputCity from '../../Components/InputCity';
 
 test('should render input field', () => {
   render(<InputCity onSubmit={() => {}} onError={() => {}} />);
-  const inputElement = screen.getByPlaceholderText('都市名を入力してください');
+  const inputElement = getInputElement();
 
   expect(inputElement).toBeVisible();
 });
@@ -51,7 +51,7 @@ test('should return error with only spaces', () => {
  * @returns 入力フィールド
  */
 function getInputElement(): HTMLInputElement {
-  return screen.getByPlaceholderText('都市名を入力してください');
+  return screen.getByPlaceholderText('都市名を選択');
 }
 
 /**

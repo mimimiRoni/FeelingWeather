@@ -24,7 +24,7 @@ const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
         type="text"
         value={inputValue}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="都市名を入力してください"
+        placeholder="都市名を選択"
       />
     </form>
   );
