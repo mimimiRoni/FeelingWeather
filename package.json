@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "preview": "vite preview",
+    "build-and-preview": "npm run build && npm run preview",
     "format": "prettier --write .",
     "test": "jest --passWithNoTests"
   },
