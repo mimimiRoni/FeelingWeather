@@ -36,7 +36,27 @@ export default tseslint.config(
         'error',
         {
           max: 1,
-          maxEOF: 0,
+          maxBOF: 0,
+          maxEOF: 1,
+        },
+      ],
+      'no-constructor-return': 'error',
+      'no-duplicate-imports': ['error', { includeExports: true }],
+      'class-methods-use-this': 'error',
+      'default-case-last': 'error',
+      eqeqeq: ['error', 'always'],
+      'eol-last': ['error', 'always'],
+      'padding-line-between-statements': [
+        'error',
+        {
+          blankLine: 'always',
+          prev: 'block-like',
+          next: '*',
+        },
+        {
+          blankLine: 'always',
+          prev: ['case', 'default'],
+          next: '*',
         },
       ],
     },
