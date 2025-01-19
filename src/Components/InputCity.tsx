@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import CitiesData from '../data/citiesData.json';
 
 type InputCityProps = {
   onSubmit: (city: string) => void;
@@ -6,6 +7,7 @@ type InputCityProps = {
 };
 
 const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
+  const data = CitiesData;
   const [inputValue, setInput] = useState('');
   const [isVisibleOptions, setVisibleOptions] = useState(false);
   const onSubmitHandle = (e: React.FormEvent) => {
@@ -30,8 +32,8 @@ const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
         }}
         placeholder="都市名を選択"
       />
-      <div role="listbox" hidden={!isVisibleOptions}>
-        <div
+      <ul role="listbox" hidden={!isVisibleOptions}>
+        <li
           onClick={() => {
             setInput('現在地');
             onSubmit('現在地');
@@ -39,8 +41,8 @@ const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
           }}
         >
           現在値
-        </div>
-        <div
+        </li>
+        <li
           onClick={() => {
             setInput('TODO:選択できる都市名一覧');
             onSubmit('TODO:選択できる都市名一覧');
@@ -48,8 +50,16 @@ const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
           }}
         >
           TODO:選択できる都市名一覧
-        </div>
-      </div>
+        </li>
+        {Object.entries(data).map(([key, value]) => (
+          <li key={key}>
+            <p>
+              {key}:{value.city} {value.ward || ''}({value.pref}){' '}
+              {value.rep_lat},{value.rep_lon}
+            </p>
+          </li>
+        ))}
+      </ul>
     </form>
   );
 };
