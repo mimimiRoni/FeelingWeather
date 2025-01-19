@@ -85,6 +85,8 @@ def process_csv_files(input_folder, output_file):
     # JSONとして保存
     save_to_json(merged_data, output_file)
 
+    print(f"処理が完了しました: {output_file}")
+
 # TODO: ファイルパスをconfig.jsonなどで設定できるようにする
 input_folder = 'citiesdata_modules'  # CSVファイルが格納されているフォルダ
 output_file = 'public/citiesData.json'  # 結果のJSONファイル名
