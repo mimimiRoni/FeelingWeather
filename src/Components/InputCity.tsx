@@ -9,24 +9,46 @@ type InputCityProps = {
 const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
   const data = CitiesData;
   const [inputValue, setInput] = useState('');
+  const [getSelected, setSelected] = useState('');
   const [isVisibleOptions, setVisibleOptions] = useState(false);
+
   const onSubmitHandle = (e: React.FormEvent) => {
     e.preventDefault();
-    const inputStr = inputValue.trim();
-    if (!inputStr) {
+    const selectedStr = getSelected.trim();
+    if (!selectedStr) {
       onError('都市名を入力してください');
       return;
     }
 
-    onSubmit(inputStr);
+    onSubmit(selectedStr);
   };
+
+  const onSelected = (city: string) => {
+    setSelected(city);
+    onSubmit(city);
+    setVisibleOptions(false);
+  };
+
+  const filteredData = Object.entries(data)
+    .filter(([, value]) => {
+      return value.city.includes(inputValue) || value.ward.includes(inputValue);
+    })
+    .sort(([, a], [, b]) => {
+      if (a.city.startsWith(inputValue) && b.city.startsWith(inputValue)) {
+        return 0;
+      } else if (a.city.startsWith(inputValue)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
 
   return (
     <form onSubmit={onSubmitHandle} role="form">
       <input
         type="search"
         value={inputValue}
-        // onChange={(e) => setInput(e.target.value)}
+        onChange={(e) => setInput(e.target.value)}
         onFocus={() => {
           setVisibleOptions(true);
         }}
@@ -35,30 +57,26 @@ const InputCity: React.FC<InputCityProps> = ({ onSubmit, onError }) => {
       <ul role="listbox" hidden={!isVisibleOptions}>
         <li
           onClick={() => {
-            setInput('現在地');
-            onSubmit('現在地');
-            setVisibleOptions(false);
+            onSelected('現在地');
           }}
         >
           現在値
         </li>
-        <li
-          onClick={() => {
-            setInput('TODO:選択できる都市名一覧');
-            onSubmit('TODO:選択できる都市名一覧');
-            setVisibleOptions(false);
-          }}
-        >
-          TODO:選択できる都市名一覧
-        </li>
-        {Object.entries(data).map(([key, value]) => (
-          <li key={key}>
-            <p>
-              {key}:{value.city} {value.ward || ''}({value.pref}){' '}
-              {value.rep_lat},{value.rep_lon}
-            </p>
-          </li>
-        ))}
+        {inputValue.trim() &&
+          filteredData.map(([key, value]) => {
+            const displayName =
+              value.city + (value.ward || '') + '(' + value.pref + ')';
+            return (
+              <li
+                key={key}
+                onClick={() => {
+                  onSelected(displayName);
+                }}
+              >
+                {displayName}
+              </li>
+            );
+          })}
       </ul>
     </form>
   );

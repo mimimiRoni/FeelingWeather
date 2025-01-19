@@ -18,14 +18,52 @@ test('should user be able to input', () => {
   expect(inputElement).toHaveValue(inputValue);
 });
 
-test('should call onSubmit with input', () => {
-  const mockOnSubmit = jest.fn();
-  render(<InputCity onSubmit={mockOnSubmit} onError={() => {}} />);
-  const inputValue = '東京';
+test('should selections length grater than 0 with input 京', () => {
+  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
+  const inputValue = '京';
 
-  inputOnSubmit(inputValue);
+  const inputElement = getInputElement();
+  fireEvent.focus(inputElement);
+  fireEvent.change(inputElement, { target: { value: inputValue } });
 
-  expect(mockOnSubmit).toHaveBeenCalledWith(inputValue);
+  const ulElement = screen.getByRole('listbox');
+  const liElement = Array.from(ulElement.querySelectorAll('li')).filter((li) =>
+    li.textContent?.includes(inputValue),
+  );
+
+  expect(liElement.length).toBeGreaterThan(0);
+});
+
+test('should selections length 0 with no input', () => {
+  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
+  const inputValue = '';
+
+  const inputElement = getInputElement();
+  fireEvent.focus(inputElement);
+  fireEvent.change(inputElement, { target: { value: inputValue } });
+
+  const ulElement = screen.getByRole('listbox');
+  const liElement = Array.from(ulElement.querySelectorAll('li')).filter(
+    (li) => li.textContent === '現在地' || li.textContent?.includes(inputValue),
+  );
+
+  // 「現在地」選択肢があるので、1つは表示される
+  expect(liElement.length).toBe(1);
+});
+
+test('should selections length 0 with input space', () => {
+  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
+  const inputValue = ' ';
+
+  const inputElement = getInputElement();
+  fireEvent.focus(inputElement);
+  fireEvent.change(inputElement, { target: { value: inputValue } });
+
+  const ulElement = screen.getByRole('listbox');
+  const liElement = Array.from(ulElement.querySelectorAll('li'));
+
+  // 「現在地」選択肢があるので、1つは表示される
+  expect(liElement.length).toBe(1);
 });
 
 test('should not call onSubmit with no input', () => {
