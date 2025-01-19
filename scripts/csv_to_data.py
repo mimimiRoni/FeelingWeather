@@ -89,6 +89,6 @@ def process_csv_files(input_folder, output_file):
 
 # TODO: ファイルパスをconfig.jsonなどで設定できるようにする
 input_folder = 'citiesdata_modules'  # CSVファイルが格納されているフォルダ
-output_file = 'public/citiesData.json'  # 結果のJSONファイル名
+output_file = 'src/data/citiesData.json'  # 結果のJSONファイル名
 
 process_csv_files(input_folder, output_file)
