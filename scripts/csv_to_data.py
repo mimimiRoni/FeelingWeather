@@ -86,7 +86,7 @@ def process_csv_files(input_folder, output_file):
     save_to_json(merged_data, output_file)
 
 # TODO: ファイルパスをconfig.jsonなどで設定できるようにする
-input_folder = 'citiesdata'  # CSVファイルが格納されているフォルダ
+input_folder = 'citiesdata_modules'  # CSVファイルが格納されているフォルダ
 output_file = 'public/citiesData.json'  # 結果のJSONファイル名
 
 process_csv_files(input_folder, output_file)

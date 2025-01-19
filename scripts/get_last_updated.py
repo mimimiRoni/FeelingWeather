@@ -14,7 +14,7 @@ CONFIG_FILE = "citiesdata.config.json"
 URL = "https://catalog.registries.digital.go.jp/rc/dataset/ba000001"
 DOWNLOAD_URL = "https://catalog.registries.digital.go.jp/rsc/address/address_all.csv.zip"
 ZIP_FILE_NAME = "address_all.csv.zip"
-EXTRACT_DIR = "citiesdata"
+EXTRACT_DIR = "citiesdata_modules"
 
 # 日付を比較するための関数
 def is_update_available(last_update_date: str, new_date: str) -> bool:
