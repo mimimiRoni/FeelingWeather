@@ -7,6 +7,9 @@ from datetime import datetime
 # JSONファイルのパス
 CONFIG_FILE = "citiesdata.config.json"
 
+# TODO:固定の文字列をconfig.jsonなどで設定してそれを読み込めるようにする
+# TODO:ダウンロードURLなどもconfig.jsonで複数設定し、それぞれ更新日を比較してダウンロードするようにする
+# →（今はすべてのデータをダウンロードしているので不要なデータがほとんど）
 # ターゲットURL
 URL = "https://catalog.registries.digital.go.jp/rc/dataset/ba000001"
 DOWNLOAD_URL = "https://catalog.registries.digital.go.jp/rsc/address/address_all.csv.zip"
