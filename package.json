@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "build-and-preview": "npm run build && npm run preview",
     "format": "prettier --write .",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "cities-data": "python scripts\\get_last_updated.py && python scripts\\csv_to_data.py"
   },
   "dependencies": {
     "@netlify/functions": "^3.0.0",
