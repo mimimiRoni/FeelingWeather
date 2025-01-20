@@ -4,14 +4,17 @@ type SearchableDropdownProps<T> = {
   placeholder: string;
   getFilteredOptions: (query: string) => T[];
   displayOption: (option: T) => string;
+  onSelected: (option: T) => void;
 };
 
 export const SearchableDropdown = <T,>({
   placeholder,
   getFilteredOptions,
   displayOption,
+  onSelected,
 }: SearchableDropdownProps<T>): JSX.Element => {
   const [isVisibleOptions, setVisibleOptions] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   return (
     <div
       onFocus={() => {
@@ -21,11 +24,23 @@ export const SearchableDropdown = <T,>({
         setVisibleOptions(false);
       }}
     >
-      <input role="searchbox" placeholder={placeholder}></input>
+      <input
+        role="searchbox"
+        placeholder={placeholder}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+      ></input>
       <ul role="list" hidden={!isVisibleOptions}>
-        {getFilteredOptions('').map((option, index) => {
+        {getFilteredOptions(inputValue).map((option, index) => {
           return (
-            <li role="listitem" key={index}>
+            <li
+              role="listitem"
+              key={index}
+              onClick={() => {
+                onSelected(option);
+                setVisibleOptions(false);
+              }}
+            >
               {displayOption(option)}
             </li>
           );
