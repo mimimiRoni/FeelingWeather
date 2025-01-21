@@ -26,13 +26,13 @@ export const SearchableDropdown = <T,>({
     >
       <input
         role="searchbox"
+        type="search"
         placeholder={placeholder}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       ></input>
       <ul role="list" hidden={!isVisibleOptions}>
         {getFilteredOptions(inputValue).map((option, index) => {
-          console.log(option);
           return (
             <li
               role="listitem"

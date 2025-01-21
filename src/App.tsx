@@ -16,8 +16,8 @@ function App() {
   return (
     <>
       <InputCity
-        onSelected={(city) => {
-          setCity(city);
+        onSelected={([, value]) => {
+          setCity(value.city);
           setError(null);
         }}
         onError={(errorMassage) => {

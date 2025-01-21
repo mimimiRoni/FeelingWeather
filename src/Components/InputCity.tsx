@@ -9,10 +9,8 @@ type InputCityProps = {
 
 const InputCity: React.FC<InputCityProps> = ({ onSelected, onError }) => {
   const data: CitiesDatabase = CitiesData;
-
   const getFilteredData = (query: string) => {
     if (!query.trim()) {
-      console.log('都市名を入力してください' + { query });
       onError('都市名を入力してください');
       return [];
     }
