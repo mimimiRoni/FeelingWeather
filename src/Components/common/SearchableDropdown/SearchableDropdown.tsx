@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 type SearchableDropdownProps<T> = {
   placeholder: string;
-  getFilteredOptions: (query: string) => T[];
+  getFilteredOptions: (query: string) => T[] | [];
   displayOption: (option: T) => string;
   onSelected: (option: T) => void;
 };
@@ -32,6 +32,7 @@ export const SearchableDropdown = <T,>({
       ></input>
       <ul role="list" hidden={!isVisibleOptions}>
         {getFilteredOptions(inputValue).map((option, index) => {
+          console.log(option);
           return (
             <li
               role="listitem"

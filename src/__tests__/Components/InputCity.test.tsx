@@ -1,105 +1,78 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import InputCity from '../../Components/InputCity';
 
-test('should render input field', () => {
-  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
-  const inputElement = getInputElement();
+const CitiesDataPath = '../../data/citiesData.json';
 
-  expect(inputElement).toBeVisible();
-});
-
-test('should user be able to input', () => {
-  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
-  const inputElement = getInputElement();
-  const inputValue = '東京';
-
-  fireEvent.change(inputElement, { target: { value: inputValue } });
-
-  expect(inputElement).toHaveValue(inputValue);
-});
-
-test('should selections length grater than 0 with input 京', () => {
-  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
-  const inputValue = '京';
-
-  const inputElement = getInputElement();
-  fireEvent.focus(inputElement);
-  fireEvent.change(inputElement, { target: { value: inputValue } });
-
-  const ulElement = screen.getByRole('listbox');
-  const liElement = Array.from(ulElement.querySelectorAll('li')).filter((li) =>
-    li.textContent?.includes(inputValue),
-  );
-
-  expect(liElement.length).toBeGreaterThan(0);
-});
-
-test('should selections length 0 with no input', () => {
-  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
-  const inputValue = '';
-
-  const inputElement = getInputElement();
-  fireEvent.focus(inputElement);
-  fireEvent.change(inputElement, { target: { value: inputValue } });
-
-  const ulElement = screen.getByRole('listbox');
-  const liElement = Array.from(ulElement.querySelectorAll('li')).filter(
-    (li) => li.textContent === '現在地' || li.textContent?.includes(inputValue),
-  );
-
-  // 「現在地」選択肢があるので、1つは表示される
-  expect(liElement.length).toBe(1);
-});
-
-test('should selections length 0 with input space', () => {
-  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
-  const inputValue = ' ';
-
-  const inputElement = getInputElement();
-  fireEvent.focus(inputElement);
-  fireEvent.change(inputElement, { target: { value: inputValue } });
-
-  const ulElement = screen.getByRole('listbox');
-  const liElement = Array.from(ulElement.querySelectorAll('li'));
-
-  // 「現在地」選択肢があるので、1つは表示される
-  expect(liElement.length).toBe(1);
-});
-
-test('should not call onSubmit with no input', () => {
-  const mockOnSubmit = jest.fn();
-  render(<InputCity onSubmit={() => {}} onError={mockOnSubmit} />);
+test('should not call onError with no input', () => {
+  const mockOnError = jest.fn();
+  render(<InputCity onSelected={() => {}} onError={mockOnError} />);
 
   inputOnSubmit('');
 
-  expect(mockOnSubmit).toHaveBeenCalledWith('都市名を入力してください');
+  expect(mockOnError).toHaveBeenCalledWith('都市名を入力してください');
 });
 
 test('should return error with only spaces', () => {
-  const mockOnSubmit = jest.fn();
-  render(<InputCity onSubmit={() => {}} onError={mockOnSubmit} />);
+  const mockOnError = jest.fn();
+  render(<InputCity onSelected={() => {}} onError={mockOnError} />);
 
   inputOnSubmit('  ');
 
-  expect(mockOnSubmit).toHaveBeenCalledWith('都市名を入力してください');
+  expect(mockOnError).toHaveBeenCalledWith('都市名を入力してください');
 });
 
 test('should render city list when on focus input element', () => {
-  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
+  render(<InputCity onSelected={() => {}} onError={() => {}} />);
   const inputElement = getInputElement();
 
   fireEvent.focus(inputElement);
 
-  expect(screen.getByRole('listbox')).toBeVisible();
+  expect(screen.getByRole('list')).toBeVisible();
 });
 
 test('should not render city list when on unfocus input element', () => {
-  render(<InputCity onSubmit={() => {}} onError={() => {}} />);
+  render(<InputCity onSelected={() => {}} onError={() => {}} />);
   const inputElement = getInputElement();
 
   fireEvent.blur(inputElement);
 
-  expect(screen.queryByRole('listbox')).toBeNull();
+  expect(screen.queryByRole('list')).toBeNull();
+});
+
+test('should format display option correctly', () => {
+  jest.mock(CitiesDataPath, () => ({
+    '1': { city: 'Tokyo', ward: 'Shibuya', pref: 'Tokyo' },
+    '2': { city: 'Osaka', ward: 'Namba', pref: 'Osaka' },
+  }));
+
+  render(<InputCity onSelected={() => {}} onError={() => {}} />);
+
+  const input = getInputElement();
+  fireEvent.focus(input);
+  fireEvent.change(input, 'Osaka');
+
+  const option = screen.getByRole('listitem');
+  expect(option).toHaveTextContent('OsakaNamba(Osaka)');
+});
+
+test('should handle sorting of filtered data', () => {
+  jest.mock(CitiesDataPath, () => ({
+    '1': { city: 'Tokyo', ward: 'Shibuya', pref: 'Tokyo' },
+    '2': { city: 'Tottori', ward: 'Central', pref: 'Tottori' },
+    '3': { city: 'Tokyo', ward: 'Setagaya', pref: 'Tokyo' },
+  }));
+
+  render(<InputCity onSelected={() => {}} onError={() => {}} />);
+
+  const input = getInputElement();
+  fireEvent.focus(input);
+  fireEvent.change(input, { target: { value: 'To' } });
+
+  const selections = screen.getAllByRole('listitem');
+  expect(selections).toHaveLength(3);
+  expect(selections[0]).toHaveTextContent('TokyoShibuya(Tokyo)');
+  expect(selections[1]).toHaveTextContent('TokyoSetagaya(Tokyo)');
+  expect(selections[2]).toHaveTextContent('TottoriCentral(Tottori)');
 });
 
 /**
@@ -107,7 +80,7 @@ test('should not render city list when on unfocus input element', () => {
  * @returns 入力フィールド
  */
 function getInputElement(): HTMLInputElement {
-  return screen.getByPlaceholderText('都市名を選択');
+  return screen.getByRole('searchbox');
 }
 
 /**

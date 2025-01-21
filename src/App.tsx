@@ -16,7 +16,7 @@ function App() {
   return (
     <>
       <InputCity
-        onSubmit={(city) => {
+        onSelected={(city) => {
           setCity(city);
           setError(null);
         }}
