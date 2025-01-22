@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 type SearchableDropdownProps<T> = {
   placeholder: string;
@@ -15,13 +15,30 @@ export const SearchableDropdown = <T,>({
 }: SearchableDropdownProps<T>): JSX.Element => {
   const [isVisibleOptions, setVisibleOptions] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (
+      containerRef.current &&
+      event.target instanceof Node &&
+      !containerRef.current.contains(event.target)
+    ) {
+      setVisibleOptions(false);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, []);
+
   return (
     <div
+      ref={containerRef}
       onFocus={() => {
         setVisibleOptions(true);
-      }}
-      onBlur={() => {
-        setVisibleOptions(false);
       }}
     >
       <input
