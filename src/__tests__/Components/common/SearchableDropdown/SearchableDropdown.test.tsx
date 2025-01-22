@@ -91,7 +91,7 @@ test('should render selections box when input is focused', () => {
   expect(selectionsBox).toBeVisible();
 });
 
-test('should render selections box when input is focused and blur', () => {
+test('should not render selections box when clicked outside', () => {
   render(
     <SearchableDropdown
       placeholder=""
@@ -107,7 +107,7 @@ test('should render selections box when input is focused and blur', () => {
   const input = screen.getByRole('searchbox');
 
   fireEvent.focus(input);
-  fireEvent.blur(input);
+  fireEvent.click(document.body);
 
   const selectionsBox = screen.queryByRole('list');
   expect(selectionsBox).toBeNull();
