@@ -2,10 +2,11 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import InputCity from '../../Components/InputCity';
 
 jest.mock('../../data/citiesData.json', () => ({
-  '1': { city: 'Tokyo', ward: 'Shibuya', pref: 'Tokyo' },
-  '2': { city: 'Osaka', ward: 'Namba', pref: 'Osaka' },
-  '3': { city: 'Tottori', ward: 'Central', pref: 'Tottori' },
-  '4': { city: 'Tokyo', ward: 'Setagaya', pref: 'Tokyo' },
+  '1': { city: 'あいう', ward: '', pref: '県名' },
+  '2': { city: 'あいうえ', ward: '', pref: '県名' },
+  '3': { city: 'かきく', ward: 'あいう', pref: '県名' },
+  '4': { city: 'あいす', ward: '', pref: '県名' },
+  '5': { city: 'さしす', ward: '', pref: '県名' },
 }));
 beforeEach(() => {
   jest.resetModules();
@@ -52,24 +53,45 @@ test('should format display option correctly', () => {
 
   const inputElement = getInputElement();
   fireEvent.focus(inputElement);
-  fireEvent.change(inputElement, { target: { value: 'Osaka' } });
+  fireEvent.change(inputElement, { target: { value: 'さしす' } });
 
   const option = screen.getByRole('listitem');
-  expect(option).toHaveTextContent('OsakaNamba(Osaka)');
+  expect(option).toHaveTextContent('さしす(県名)');
 });
 
-test('should handle sorting of filtered data', () => {
+test('should handle filtered data', () => {
   render(<InputCity onSelected={() => {}} onError={() => {}} />);
 
   const inputElement = getInputElement();
   fireEvent.focus(inputElement);
-  fireEvent.change(inputElement, { target: { value: 'To' } });
+  fireEvent.change(inputElement, { target: { value: 'あい' } });
 
   const selections = screen.getAllByRole('listitem');
-  expect(selections).toHaveLength(3);
-  expect(selections[0]).toHaveTextContent('TokyoShibuya(Tokyo)');
-  //expect(selections[1]).toHaveTextContent('TokyoSetagaya(Tokyo)');
-  expect(selections[2]).toHaveTextContent('TottoriCentral(Tottori)');
+  const selectedContents = selections.map((selection) => selection.textContent);
+  const expectedContents = [
+    'あいう(県名)',
+    'あいうえ(県名)',
+    'かきくあいう(県名)',
+    'あいす(県名)',
+  ];
+  expect(selections).toHaveLength(4);
+  expect(selectedContents).toEqual(expect.arrayContaining(expectedContents));
+});
+
+test('should handle sorted data', () => {
+  render(<InputCity onSelected={() => {}} onError={() => {}} />);
+
+  const inputElement = getInputElement();
+  fireEvent.focus(inputElement);
+  fireEvent.change(inputElement, { target: { value: 'あい' } });
+
+  const selections = screen.getAllByRole('listitem');
+
+  expect(selections).toHaveLength(4);
+  expect(selections[0]).toHaveTextContent('あいう(県名)');
+  expect(selections[1]).toHaveTextContent('あいうえ(県名)');
+  expect(selections[2]).toHaveTextContent('あいす(県名)');
+  expect(selections[3]).toHaveTextContent('かきくあいう(県名)');
 });
 
 /**

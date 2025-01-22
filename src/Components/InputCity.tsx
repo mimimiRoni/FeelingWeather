@@ -20,9 +20,11 @@ const InputCity: React.FC<InputCityProps> = ({ onSelected, onError }) => {
         return value.city.includes(query) || value.ward.includes(query);
       })
       .sort(([, a], [, b]) => {
-        if (a.city.startsWith(query) && b.city.startsWith(query)) {
-          return 0;
-        } else if (a.city.startsWith(query)) {
+        const aText = a.city + a.ward;
+        const bText = b.city + b.ward;
+        if (aText.startsWith(query) && bText.startsWith(query)) {
+          return aText.localeCompare(bText);
+        } else if (aText.startsWith(query)) {
           return -1;
         } else {
           return 1;
