@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import './App.css';
 import InputCity from './Components/InputCity';
 import Weather from './Components/Weather';
@@ -19,6 +20,13 @@ function App() {
         onSelected={([, value]) => {
           setCity(value.city + value.ward + '(' + value.pref + ')');
           setError(null);
+          axios
+            .get(
+              `${location.origin}/.netlify/functions/getCurrentWeather/?lat=${value.rep_lat}&lon=${value.rep_lon}`,
+            )
+            .then((response) => {
+              console.log(response.data);
+            });
         }}
         onError={(errorMassage) => {
           setError(errorMassage);
