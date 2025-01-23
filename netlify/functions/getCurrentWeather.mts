@@ -1,4 +1,6 @@
 import { Context } from '@netlify/functions';
+import { RawCurrentWeather } from '../../src/types/RawCurrentWeather.type';
+import { CurrentWeather } from '../../src/types/CurrentWeather.type';
 import axios from 'axios';
 
 const baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
@@ -13,15 +15,36 @@ export default async (request: Request, context: Context) => {
     return new Response('Invalid parameters', { status: 400 });
   }
 
-  axios
-    .get(
-      `${baseUrl}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=ja`,
-    )
-    .then((response) => {
-      console.log(response.data);
-      return new Response(JSON.stringify(response.data), { status: 200 });
-    })
-    .catch(() => {
-      return new Response('Failed to get weather data', { status: 500 });
-    });
+  const response = await axios.get<RawCurrentWeather>(
+    `${baseUrl}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=ja`,
+  );
+
+  const data = response.data;
+  return new Response(JSON.stringify(convertRawCurrentWeather(data)));
 };
+
+/**
+ * APIから取得した生の天気データをアプリケーションで扱いやすい形式に変換する
+ * @param raw APIから取得した生の天気データ
+ * @returns {CurrentWeather} アプリケーションで扱いやすい形式の天気データ
+ */
+function convertRawCurrentWeather(raw: RawCurrentWeather): CurrentWeather {
+  return {
+    weather: raw.weather,
+    main: {
+      temp: raw.main.temp,
+      feels_like: raw.main.feels_like,
+      humidity: raw.main.humidity,
+    },
+    wind: {
+      speed: raw.wind.speed,
+      deg: raw.wind.deg,
+    },
+    dt: raw.dt,
+    sys: {
+      sunrise: raw.sys.sunrise,
+      sunset: raw.sys.sunset,
+    },
+    timezone: raw.timezone,
+  };
+}
