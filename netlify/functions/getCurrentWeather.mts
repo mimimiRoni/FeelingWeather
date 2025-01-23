@@ -1,7 +1,6 @@
 import { Context } from '@netlify/functions';
 import axios from 'axios';
 
-// https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 const baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
 export default async (request: Request, context: Context) => {
