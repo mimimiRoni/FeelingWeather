@@ -1,31 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import InputCity from './Components/InputCity';
 import Weather from './Components/Weather';
+import { getCurrentWeather } from './api/weatherApi';
+import { CurrentWeather } from './types/CurrentWeather.type';
+import { CityData } from './data/CitiesData.type';
 
 /**
  * The main application component.
  * @returns The rendered component.
  */
 function App() {
-  // TODO: 今は決め打ちで固定値を設定しておくので、気温を取得して入れるようにする
-  const temperature = 25;
-  const [getCity, setCity] = useState('都市名');
-  const [getError, setError] = useState<string | null>(null);
+  const [getCity, setCity] = useState<CityData | null>(null);
+  const [getWeather, setWeather] = useState<CurrentWeather | null>(null);
+
+  useEffect(() => {
+    if (getCity) {
+      getCurrentWeather(getCity.rep_lat, getCity.rep_lon).then((current) => {
+        setWeather(current);
+      });
+    }
+  }, [getCity]);
 
   return (
     <>
       <InputCity
         onSelected={([, value]) => {
-          setCity(value.city + value.ward + '(' + value.pref + ')');
-          setError(null);
-        }}
-        onError={(errorMassage) => {
-          setError(errorMassage);
+          setCity(value);
         }}
       />
-      <p>{getError ? getError : getCity}</p>
-      <Weather temperature={temperature} />
+      <p>
+        {getCity
+          ? getCity.city + getCity.ward + '(' + getCity.pref + ')'
+          : '表示する場所を選択してください'}
+      </p>
+      {getWeather ? <Weather {...getWeather} /> : null}
     </>
   );
 }

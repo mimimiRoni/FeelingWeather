@@ -12,26 +12,8 @@ beforeEach(() => {
   jest.resetModules();
 });
 
-test('should not call onError with no input', () => {
-  const mockOnError = jest.fn();
-  render(<InputCity onSelected={() => {}} onError={mockOnError} />);
-
-  inputOnSubmit('');
-
-  expect(mockOnError).toHaveBeenCalledWith('都市名を入力してください');
-});
-
-test('should return error with only spaces', () => {
-  const mockOnError = jest.fn();
-  render(<InputCity onSelected={() => {}} onError={mockOnError} />);
-
-  inputOnSubmit('  ');
-
-  expect(mockOnError).toHaveBeenCalledWith('都市名を入力してください');
-});
-
 test('should render city list when on focus input element', () => {
-  render(<InputCity onSelected={() => {}} onError={() => {}} />);
+  render(<InputCity onSelected={() => {}} />);
   const inputElement = getInputElement();
 
   fireEvent.focus(inputElement);
@@ -40,7 +22,7 @@ test('should render city list when on focus input element', () => {
 });
 
 test('should not render city list when on unfocus input element', () => {
-  render(<InputCity onSelected={() => {}} onError={() => {}} />);
+  render(<InputCity onSelected={() => {}} />);
   const inputElement = getInputElement();
 
   fireEvent.blur(inputElement);
@@ -49,7 +31,7 @@ test('should not render city list when on unfocus input element', () => {
 });
 
 test('should format display option correctly', () => {
-  render(<InputCity onSelected={() => {}} onError={() => {}} />);
+  render(<InputCity onSelected={() => {}} />);
 
   const inputElement = getInputElement();
   fireEvent.focus(inputElement);
@@ -60,7 +42,7 @@ test('should format display option correctly', () => {
 });
 
 test('should handle filtered data', () => {
-  render(<InputCity onSelected={() => {}} onError={() => {}} />);
+  render(<InputCity onSelected={() => {}} />);
 
   const inputElement = getInputElement();
   fireEvent.focus(inputElement);
@@ -79,7 +61,7 @@ test('should handle filtered data', () => {
 });
 
 test('should handle sorted data', () => {
-  render(<InputCity onSelected={() => {}} onError={() => {}} />);
+  render(<InputCity onSelected={() => {}} />);
 
   const inputElement = getInputElement();
   fireEvent.focus(inputElement);
@@ -100,16 +82,4 @@ test('should handle sorted data', () => {
  */
 function getInputElement(): HTMLInputElement {
   return screen.getByRole('searchbox');
-}
-
-/**
- * 入力フィールドに指定文字列を入力してフォームを送信する
- * @param inputValue 入力する文字列
- */
-function inputOnSubmit(inputValue: string) {
-  const inputElement = getInputElement();
-  fireEvent.change(inputElement, { target: { value: inputValue } });
-
-  const formElement = inputElement.closest('form');
-  fireEvent.submit(formElement!);
 }

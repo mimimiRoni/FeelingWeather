@@ -4,14 +4,12 @@ import { CitiesDatabase, CityData } from '../data/CitiesData.type';
 
 type InputCityProps = {
   onSelected: (city: [string, CityData]) => void;
-  onError: (errorMassage: string) => void;
 };
 
-const InputCity: React.FC<InputCityProps> = ({ onSelected, onError }) => {
+const InputCity: React.FC<InputCityProps> = ({ onSelected }) => {
   const data: CitiesDatabase = CitiesData;
   const getFilteredData = (query: string) => {
     if (!query.trim()) {
-      onError('都市名を入力してください');
       return [];
     }
 
