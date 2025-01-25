@@ -13,7 +13,6 @@ export const getCurrentWeather = async (
 
   if (storedData) {
     const convertedStoreData = JSON.parse(storedData) as StoreData;
-    console.log(convertedStoreData);
     if (convertedStoreData !== null) {
       const diffMinutes = (now - convertedStoreData.storedDate) / 60000;
       if (diffMinutes < 30) {
