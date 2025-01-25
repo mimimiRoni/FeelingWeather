@@ -28,6 +28,7 @@ export default tseslint.config(
       jsdoc,
     },
     rules: {
+      'no-console': 'warn',
       'prettier/prettier': 'error',
       ...reactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
