@@ -13,11 +13,11 @@ export const getCurrentWeather = async (
 
   if (storedData) {
     const convertedStoreData = JSON.parse(storedData) as StoreData;
+    console.log(convertedStoreData);
     if (convertedStoreData !== null) {
-      const diffMinutes =
-        (now - convertedStoreData.storedDate.getTime()) / 60000;
+      const diffMinutes = (now - convertedStoreData.storedDate) / 60000;
       if (diffMinutes < 30) {
-        return convertedStoreData.data;
+        return restoreStoreData(convertedStoreData);
       } else {
         localStorage.removeItem(storeKey);
       }
@@ -36,7 +36,7 @@ export const getCurrentWeather = async (
 
   const newStoreData: StoreData = {
     data: response.data,
-    storedDate: new Date(now),
+    storedDate: now,
   };
 
   localStorage.setItem(storeKey, JSON.stringify(newStoreData));
@@ -46,5 +46,23 @@ export const getCurrentWeather = async (
 
 type StoreData = {
   data: CurrentWeather;
-  storedDate: Date;
+  storedDate: number;
 };
+
+/**
+ * 格納していたデータを復元する
+ * @param {StoreData} storeData - 格納していたデータ
+ * @returns {CurrentWeather} 復元したデータ
+ */
+function restoreStoreData(storeData: StoreData): CurrentWeather {
+  return {
+    weather: storeData.data.weather,
+    main: storeData.data.main,
+    wind: storeData.data.wind,
+    dt: new Date(storeData.data.dt),
+    sys: {
+      sunrise: new Date(storeData.data.sys.sunrise),
+      sunset: new Date(storeData.data.sys.sunset),
+    },
+  };
+}
