@@ -1,9 +1,11 @@
-type WeatherProps = {
-  temperature: number;
-};
+import { CurrentWeather } from '../types/CurrentWeather.type';
 
-const Weather: React.FC<WeatherProps> = ({ temperature }) => {
-  return <div>気温： {temperature}°C</div>;
+const Weather: React.FC<CurrentWeather> = (weather) => {
+  return (
+    <>
+      <div>{weather.main.temp}°C</div>
+    </>
+  );
 };
 
 export default Weather;

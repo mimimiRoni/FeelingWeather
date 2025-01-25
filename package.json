@@ -9,11 +9,14 @@
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "preview": "vite preview",
+    "build-and-preview": "npm run build && npm run preview",
     "format": "prettier --write .",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "cities-data": "python scripts\\get_last_updated.py && python scripts\\csv_to_data.py"
   },
   "dependencies": {
     "@netlify/functions": "^3.0.0",
+    "axios": "^1.7.9",
     "netlify-cli": "^18.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
@@ -32,6 +35,7 @@
     "babel-jest": "^29.7.0",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-jsdoc": "^50.6.2",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
