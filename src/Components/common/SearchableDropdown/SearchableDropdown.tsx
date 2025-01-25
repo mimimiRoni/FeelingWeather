@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 type SearchableDropdownProps<T> = {
   placeholder: string;
@@ -15,6 +15,7 @@ export const SearchableDropdown = <T,>({
 }: SearchableDropdownProps<T>): JSX.Element => {
   const [isVisibleOptions, setVisibleOptions] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [selectedOption, setSelectedOption] = useState<T | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const handleOutsideClick = (event: MouseEvent) => {
@@ -27,12 +28,18 @@ export const SearchableDropdown = <T,>({
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener('click', handleOutsideClick);
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
   }, []);
+
+  useEffect(() => {
+    if (selectedOption !== null) {
+      onSelected(selectedOption);
+    }
+  }, [selectedOption, onSelected]);
 
   return (
     <div
@@ -55,7 +62,7 @@ export const SearchableDropdown = <T,>({
               role="listitem"
               key={index}
               onClick={() => {
-                onSelected(option);
+                setSelectedOption(option);
                 setVisibleOptions(false);
               }}
             >
