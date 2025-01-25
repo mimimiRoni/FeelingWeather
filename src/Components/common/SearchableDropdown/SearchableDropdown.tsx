@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import styles from './SearchableDropdown.module.css';
 
 type SearchableDropdownProps<T> = {
   placeholder: string;
@@ -47,6 +48,7 @@ export const SearchableDropdown = <T,>({
       onFocus={() => {
         setVisibleOptions(true);
       }}
+      className={styles.container}
     >
       <input
         role="searchbox"
@@ -54,8 +56,9 @@ export const SearchableDropdown = <T,>({
         placeholder={placeholder}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+        className={styles.input}
       ></input>
-      <ul role="list" hidden={!isVisibleOptions}>
+      <ul role="list" hidden={!isVisibleOptions} className={styles.options}>
         {getFilteredOptions(inputValue).map((option, index) => {
           return (
             <li
