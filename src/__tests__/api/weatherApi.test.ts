@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { getCurrentWeather } from './weatherApi';
-import { CurrentWeather } from '../types/CurrentWeather.type';
+import { getCurrentWeather } from './../../api/weatherApi';
+import { CurrentWeather } from '../../types/CurrentWeather.type';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
