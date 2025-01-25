@@ -2,20 +2,21 @@ export interface CurrentWeather {
   weather: Weather;
   main: Main;
   wind: Wind;
-  dt: number;
+  dt: Date;
   sys: Sys;
-  timezone: number;
 }
 
 export interface Main {
   temp: number;
   feels_like: number;
+  temp_min: number;
+  temp_max: number;
   humidity: number;
 }
 
 export interface Sys {
-  sunrise: number;
-  sunset: number;
+  sunrise: Date;
+  sunset: Date;
 }
 
 export interface Weather {

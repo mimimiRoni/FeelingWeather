@@ -39,17 +39,18 @@ function convertRawCurrentWeather(raw: RawCurrentWeather): CurrentWeather {
     main: {
       temp: raw.main.temp,
       feels_like: raw.main.feels_like,
+      temp_min: raw.main.temp_min,
+      temp_max: raw.main.temp_max,
       humidity: raw.main.humidity,
     },
     wind: {
       speed: raw.wind.speed,
       deg: raw.wind.deg,
     },
-    dt: raw.dt,
+    dt: new Date((raw.dt + raw.timezone) * 1000),
     sys: {
-      sunrise: raw.sys.sunrise,
-      sunset: raw.sys.sunset,
+      sunrise: new Date((raw.sys.sunrise + raw.timezone) * 1000),
+      sunset: new Date((raw.sys.sunset + raw.timezone) * 1000),
     },
-    timezone: raw.timezone,
   };
 }

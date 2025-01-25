@@ -3,16 +3,16 @@ import './App.css';
 import InputCity from './Components/InputCity';
 import Weather from './Components/Weather';
 import { getCurrentWeather } from './api/weatherApi';
+import { CurrentWeather } from './types/CurrentWeather.type';
 
 /**
  * The main application component.
  * @returns The rendered component.
  */
 function App() {
-  // TODO: 今は決め打ちで固定値を設定しておくので、気温を取得して入れるようにする
-  const [temperature, setTemperature] = useState(25);
   const [getCity, setCity] = useState('都市名');
   const [getError, setError] = useState<string | null>(null);
+  const [getWeather, setWeather] = useState<CurrentWeather | null>(null);
 
   return (
     <>
@@ -22,7 +22,7 @@ function App() {
           setError(null);
           getCurrentWeather(value.rep_lat, value.rep_lon).then((current) => {
             console.log(current);
-            setTemperature(current.main.temp);
+            setWeather(current);
           });
         }}
         onError={(errorMassage) => {
@@ -30,7 +30,7 @@ function App() {
         }}
       />
       <p>{getError ? getError : getCity}</p>
-      <Weather temperature={temperature} />
+      {getWeather ? <Weather {...getWeather} /> : null}
     </>
   );
 }
