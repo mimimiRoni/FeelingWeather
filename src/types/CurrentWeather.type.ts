@@ -1,5 +1,5 @@
 export interface CurrentWeather {
-  weather: Weather[];
+  weather: Weather;
   main: Main;
   wind: Wind;
   dt: number;

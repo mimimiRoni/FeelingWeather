@@ -1,6 +1,6 @@
 import { Context } from '@netlify/functions';
 import { RawCurrentWeather } from '../../src/types/RawCurrentWeather.type';
-import { CurrentWeather } from '../../src/types/CurrentWeather.type';
+import { CurrentWeather, Weather } from '../../src/types/CurrentWeather.type';
 import axios from 'axios';
 
 const baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
@@ -29,8 +29,13 @@ export default async (request: Request, context: Context) => {
  * @returns {CurrentWeather} アプリケーションで扱いやすい形式の天気データ
  */
 function convertRawCurrentWeather(raw: RawCurrentWeather): CurrentWeather {
+  const weather: Weather =
+    raw.weather.length > 0
+      ? raw.weather[0]
+      : { id: 0, main: '', description: '', icon: '' };
+
   return {
-    weather: raw.weather,
+    weather: weather,
     main: {
       temp: raw.main.temp,
       feels_like: raw.main.feels_like,
