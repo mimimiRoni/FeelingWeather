@@ -24,6 +24,7 @@ function App() {
 
   return (
     <>
+      <h1>今のお天気</h1>
       <InputCity
         onSelected={([, value]) => {
           setCity(value);
